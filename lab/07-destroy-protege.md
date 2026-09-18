@@ -6,7 +6,7 @@
 
 ## Objectif
 
-Créer un job absent par défaut, visible uniquement avec `ALLOW_DESTROY=true`, puis supprimer les ressources du lab.
+Créer un job absent par défaut et visible uniquement avec `ALLOW_DESTROY=true`. Son exécution réelle aura lieu pendant le nettoyage final du chapitre 8.
 
 ## Commandes fournies
 
@@ -54,29 +54,14 @@ Committez et poussez avec `ci: ajouter un nettoyage protege`.
 
 `terraform_destroy` doit être absent de la pipeline. Attendez la gate `terraform_apply`, puis annulez cette pipeline afin de ne pas redéployer pendant ce contrôle.
 
-## Exécuter le nettoyage
+## Vérifier la présence du job
 
 1. Ouvrez **Build > Pipelines > New pipeline**.
 2. Sélectionnez la branche contenant le lab.
 3. Ajoutez la variable `ALLOW_DESTROY` avec la valeur `true` pour cette exécution.
 4. Lancez la pipeline : `terraform_destroy` doit maintenant apparaître.
-5. Attendez le plan, lisez-le, puis lancez `terraform_apply`.
-6. Après sa réussite, lancez `terraform_destroy`.
+5. Ne déclenchez pas encore les jobs manuels : le chapitre 8 exécute le nettoyage et vérifie son résultat.
 
-Le job doit terminer par `Destroy complete! Resources: 2 destroyed.`
-
-Dans AWS CloudShell :
-
-```bash
-aws lambda get-function \
-  --function-name "$LAB_FUNCTION_NAME" \
-  --region eu-west-3
-
-aws iam get-role --role-name "${LAB_FUNCTION_NAME}-role"
-```
-
-Les erreurs attendues sont `ResourceNotFoundException` et `NoSuchEntity`. Une erreur `AccessDenied` ne prouve pas la suppression.
-
-Le bucket a été créé hors de Terraform. Dans la console S3, videz toutes les versions et marqueurs de suppression de **votre bucket du lab**, puis supprimez-le. Supprimez ensuite les variables AWS temporaires du projet GitLab.
+Le bucket a été créé hors de Terraform : `terraform_destroy` ne le supprimera pas. Ne le videz pas et ne le supprimez pas à ce stade. Le chapitre 8 permet de vérifier que lui seul reste présent, puis propose sa suppression définitive en option.
 
 [Chapitre suivant : relire la pipeline](08-pipeline-complete.md)

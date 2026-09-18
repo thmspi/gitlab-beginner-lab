@@ -21,6 +21,6 @@ Essayez chaque exercice avant de consulter un corrigé auprès de l'animateur. L
 - Travaillez dans `.gitlab-ci.yml`, à la racine du projet.
 - Utilisez uniquement les notions introduites dans le chapitre courant.
 - Attendez la fin d'une pipeline avant de modifier la même infrastructure.
-- Supprimez les ressources AWS au chapitre 7.
+- Supprimez la Lambda et son rôle IAM au chapitre 8, puis conservez le bucket S3 du state ou utilisez le nettoyage définitif optionnel.
 
 Le workshop n'utilise ni `workflow`, ni `needs`, ni cache, ni templates, ni Docker-in-Docker. Le state Terraform utilise exclusivement le backend S3 fourni dans `ressources/terraform/backend.tf`.

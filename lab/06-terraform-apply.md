@@ -53,6 +53,7 @@ Dans AWS CloudShell, remplacez `<ID-PROJET>` par l'identifiant numérique visibl
 
 ```bash
 export LAB_FUNCTION_NAME="gitlab-lab-<ID-PROJET>"
+printf '%s' '{"name":"GitLab"}' > payload.json
 
 aws lambda wait function-active-v2 \
   --function-name "$LAB_FUNCTION_NAME" \
@@ -61,12 +62,13 @@ aws lambda wait function-active-v2 \
 aws lambda invoke \
   --function-name "$LAB_FUNCTION_NAME" \
   --region eu-west-3 \
-  --cli-binary-format raw-in-base64-out \
-  --payload '{"name":"GitLab"}' \
+  --payload fileb://payload.json \
   response.json
 
 cat response.json
 ```
+
+Le préfixe `fileb://` transmet directement le contenu du fichier et fonctionne avec AWS CLI v1 comme avec AWS CLI v2.
 
 La réponse attendue est `{"statusCode": 200, "body": "Hello GitLab!"}`.
 

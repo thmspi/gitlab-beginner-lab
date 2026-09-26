@@ -19,6 +19,7 @@ Les fichiers Python et Terraform nécessaires sont fournis dans [ressources](res
 
 ```text
 Push
+  ├── DESTROY ── manuel, disponible immédiatement si ALLOW_DESTROY=true
   │
   ▼
 TEST ── unit_tests, lint, security
@@ -31,9 +32,6 @@ PLAN ── tfplan
   │
   ▼
 DEPLOY ── validation manuelle ── AWS Lambda
-  │
-  ▼
-DESTROY ── visible seulement avec ALLOW_DESTROY=true
 ```
 
 Les corrigés destinés à l'animateur sont placés localement dans `solutions/`. Ce dossier est ignoré par Git afin que les réponses ne soient pas publiées avec le starter.

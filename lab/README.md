@@ -23,4 +23,4 @@ Essayez chaque exercice avant de consulter un corrigé auprès de l'animateur. L
 - Attendez la fin d'une pipeline avant de modifier la même infrastructure.
 - Supprimez la Lambda et son rôle IAM au chapitre 8, puis conservez le bucket S3 du state ou utilisez le nettoyage définitif optionnel.
 
-Le workshop n'utilise ni `workflow`, ni `needs`, ni cache, ni templates, ni Docker-in-Docker. Le state Terraform utilise exclusivement le backend S3 fourni dans `ressources/terraform/backend.tf`.
+Le workshop n'utilise ni `workflow`, ni cache, ni templates, ni Docker-in-Docker. Le state Terraform utilise exclusivement le backend S3 fourni dans `ressources/terraform/backend.tf`.

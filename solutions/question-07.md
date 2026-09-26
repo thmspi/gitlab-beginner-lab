@@ -94,12 +94,10 @@ terraform_destroy:
   image:
     name: hashicorp/terraform:1.13.5
     entrypoint: [""]
-  dependencies:
-    - package_lambda
-    - terraform_plan
+  needs: []
   before_script:
     - >-
-      terraform -chdir=ressources/terraform init -input=false -lockfile=readonly
+      terraform -chdir=ressources/terraform init -input=false
       -backend-config="bucket=$TF_STATE_BUCKET"
       -backend-config="key=gitlab/$CI_PROJECT_ID/terraform.tfstate"
   script:
@@ -110,4 +108,4 @@ terraform_destroy:
   allow_failure: false
 ```
 
-Avec la valeur par défaut, aucune règle ne crée `terraform_destroy`. Une nouvelle pipeline lancée avec `ALLOW_DESTROY=true` ajoute le job, qui reste manuel.
+Avec la valeur par défaut, aucune règle ne crée `terraform_destroy`. Une nouvelle pipeline lancée avec `ALLOW_DESTROY=true` ajoute immédiatement le job, qui reste manuel. `needs: []` évite d'attendre les stages précédents et ne télécharge aucun artifact.

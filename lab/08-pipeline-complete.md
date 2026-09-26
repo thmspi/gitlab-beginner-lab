@@ -26,7 +26,7 @@ DEPLOY
        ▼
 AWS Lambda
 
-Si ALLOW_DESTROY=true :
+Si ALLOW_DESTROY=true, dès la création de la pipeline :
 
 DESTROY
 └── terraform_destroy ▶  MANUAL
@@ -41,6 +41,7 @@ DESTROY
 - Un exit code non nul fait échouer un job obligatoire et bloque les stages suivants.
 - Un **artifact** conserve un fichier produit après la fin du job.
 - `dependencies` choisit les artifacts des jobs précédents à télécharger.
+- `needs: []` rend un job indépendant des stages précédents et disponible immédiatement.
 - Les variables fournissent des valeurs ; `rules` décide de la présence d'un job.
 - `when: manual` impose une action humaine et `allow_failure: false` rend cette gate bloquante.
 - Le state Terraform et son verrou sont stockés dans S3, car le disque d'un runner est temporaire.
@@ -57,12 +58,10 @@ terraform_destroy:
   image:
     name: hashicorp/terraform:1.13.5
     entrypoint: [""]
-  dependencies:
-    - package_lambda
-    - terraform_plan
+  needs: []
   before_script:
     - >-
-      terraform -chdir=ressources/terraform init -input=false -lockfile=readonly
+      terraform -chdir=ressources/terraform init -input=false
       -backend-config="bucket=$TF_STATE_BUCKET"
       -backend-config="key=gitlab/$CI_PROJECT_ID/terraform.tfstate"
   script:
@@ -73,7 +72,7 @@ terraform_destroy:
   allow_failure: false
 ```
 
-Lancez une nouvelle pipeline avec `ALLOW_DESTROY=true`. Après la réussite de `terraform_apply`, déclenchez manuellement `terraform_destroy`. Le job doit terminer par `Destroy complete! Resources: 2 destroyed.`
+Lancez une nouvelle pipeline avec `ALLOW_DESTROY=true`, puis déclenchez immédiatement `terraform_destroy`, sans attendre les autres jobs. Ne déclenchez pas `terraform_apply` dans cette pipeline de nettoyage. Le job de destruction doit terminer par `Destroy complete! Resources: 2 destroyed.`
 
 Dans AWS CloudShell, vérifiez que la Lambda et le rôle IAM n'existent plus, puis que le bucket existe toujours :
 

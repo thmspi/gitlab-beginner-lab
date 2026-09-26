@@ -17,7 +17,7 @@ resource "aws_lambda_function" "hello" {
   runtime          = "python3.13"
   handler          = "lambda_function.lambda_handler"
   filename         = "${path.module}/../../lambda.zip"
-  source_code_hash = filebase64sha256("${path.module}/../../lambda.zip")
+  source_code_hash = fileexists("${path.module}/../../lambda.zip") ? filebase64sha256("${path.module}/../../lambda.zip") : null
   timeout          = 3
   memory_size      = 128
 }

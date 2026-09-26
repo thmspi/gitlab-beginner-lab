@@ -49,6 +49,11 @@ terraform -chdir=ressources/terraform plan -input=false -out=tfplan
 
 Placez `init` dans `before_script` et `plan` dans `script`.
 
+### Indices
+
+- Dans un tableau YAML, `- >-` permet d'écrire une commande sur plusieurs lignes pour la rendre lisible. Le runner replie ces lignes et exécute une seule commande ; les caractères `\` ne sont donc pas nécessaires dans `.gitlab-ci.yml`.
+- Les chemins des artifacts sont relatifs à la racine du dépôt. Avec `-chdir=ressources/terraform`, demandez-vous dans quel dossier Terraform crée `tfplan` et `.terraform.lock.hcl`.
+
 ## À vous de jouer
 
 Ajoutez `plan` après `package`, puis créez `terraform_plan`.

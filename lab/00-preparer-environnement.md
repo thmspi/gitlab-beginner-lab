@@ -82,21 +82,11 @@ Créez des credentials temporaires avec la méthode donnée par l'animateur. Dan
 | --- | --- | --- |
 | `AWS_ACCESS_KEY_ID` | identifiant temporaire | Masked |
 | `AWS_SECRET_ACCESS_KEY` | secret temporaire | Masked |
-| `AWS_SESSION_TOKEN` | jeton temporaire, si fourni | Masked |
 | `AWS_DEFAULT_REGION` | `eu-west-3` | Visible |
 | `TF_STATE_BUCKET` | nom exact du bucket, sans `s3://` | Visible |
 
 Ne cochez pas **Protect variable** pour ce lab, sauf si l'animateur vous fait travailler sur une branche protégée. Ne placez jamais de credential dans `.gitlab-ci.yml`.
 
 Ces variables donnent aux jobs l'accès à AWS et au bucket S3. Elles ne configurent aucun backend GitLab : le state reste exclusivement dans S3.
-
-## Vérification
-
-- [ ] Le projet starter est visible dans votre espace GitLab.
-- [ ] Le projet est cloné et ouvert dans Visual Studio Code ou dans un autre éditeur.
-- [ ] La branche `workshop` existe et un runner est disponible.
-- [ ] CloudShell affiche le bon compte AWS.
-- [ ] Le bucket S3 existe en `eu-west-3`, avec versioning et accès public bloqué.
-- [ ] Les variables AWS et `TF_STATE_BUCKET` sont enregistrées dans GitLab.
 
 [Chapitre suivant : créer une première pipeline](01-premiere-pipeline.md)

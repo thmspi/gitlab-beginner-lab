@@ -50,6 +50,8 @@ DESTROY
 
 Le job construit au chapitre 7 supprime uniquement les ressources suivies par Terraform : la Lambda et son rôle IAM. Le bucket S3 n'est pas déclaré dans Terraform et reste disponible après ce job. Conservez-le au moins jusqu'à la vérification du state final.
 
+> **Note:** Il est plus simple de directement se connecter à sa console > S3 > gitlab > <CI_PROJECT_ID> > Show versions, puis de tout supprimer avant de supprimer le bucket.
+
 Vérifiez que votre `.gitlab-ci.yml` contient ce job :
 
 ```yaml
@@ -106,7 +108,8 @@ cleanup_state_bucket() {
     return 1
   fi
 
-  read -r -p "Tapez le nom du bucket à supprimer définitivement : " confirm_bucket
+  printf '%s' "Tapez le nom du bucket à supprimer définitivement : " >&2
+  IFS= read -r confirm_bucket || return 1
   if [[ "$confirm_bucket" != "$TF_STATE_BUCKET" ]]; then
     echo "Confirmation incorrecte : arrêt."
     return 1
@@ -145,7 +148,7 @@ cleanup_state_bucket
 unset -f cleanup_state_bucket
 ```
 
-La boucle traite au maximum 1 000 versions ou marqueurs à la fois, puis recommence jusqu'à ce que le bucket soit vide. La dernière commande supprime le bucket. Cette suppression est définitive.
+`printf` suivi de `read` affiche la confirmation de manière compatible avec Bash et zsh. La boucle traite au maximum 1 000 versions ou marqueurs à la fois, puis recommence jusqu'à ce que le bucket soit vide. La dernière commande supprime le bucket. Cette suppression est définitive.
 
 Enfin, dans **Settings > CI/CD > Variables**, supprimez les variables temporaires du projet :
 
